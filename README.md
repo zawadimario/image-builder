@@ -13,7 +13,7 @@ echo '{"auths":{"https://index.docker.io/v1/":{"auth":"'"$(echo -n '<DOCKER_USER
 #### Create a kubernetes secret from the dockerconfig.json in the previous step
 
 ```
-kubectl create secret generic regcred --from-file=config.json=dockerconfig.json
+kubectl create secret generic regcred --from-file=dockerconfig.json=config.json
 ```
 
 #### Determine the repository to use and the Dockerfile path/context
