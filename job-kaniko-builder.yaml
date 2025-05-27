@@ -1,0 +1,49 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: kaniko-job
+spec:
+  ttlSecondsAfterFinished: 100
+  activeDeadlineSeconds: 100
+  backoffLimit: 4
+  completions: 1
+  template:
+    metadata:
+      name: kaniko
+    spec:
+      restartPolicy: OnFailure
+      # Uncomment the following section if you want to build on an specific platform node eg, arm64, amd64, etc.
+      # nodeSelector:
+      #   kubernetes.io/arch: amd64
+      volumes:
+      - name: regcred
+        secret:
+          secretName: registry-secret
+      - name: kaniko-context
+        emptyDir: {}
+      initContainers:
+      - name: git-clone
+        image: alpine/git
+        command:
+          - sh
+          - -c
+          - |
+            git clone https://$GIT_TOKEN@github.com/zawadimario/fastapi-actions-ci.git /context
+        env:
+        - name: GIT_TOKEN
+          value: your_github_token_here
+        volumeMounts:
+        - name: kaniko-context
+          mountPath: /context
+      containers:
+      - name: kaniko
+        image: gcr.io/kaniko-project/executor:latest
+        args:
+          - "--dockerfile=<path-to>Dockerfile"
+          - "--context=/context"
+          - "--destination=<full_image_name:tag"
+        volumeMounts:
+        - name: kaniko-context
+          mountPath: /context
+        - name: regcred
+          mountPath: /kaniko/.docker
