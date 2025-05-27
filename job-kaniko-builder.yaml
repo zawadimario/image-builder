@@ -29,6 +29,9 @@ spec:
           - -c
           - |
             git clone https://$GIT_TOKEN@github.com/zawadimario/fastapi-actions-ci.git /context
+            # Uncomment the following lines if you want to build from a specific branch
+            # cd /context
+            # git checkout <branch_name>
         env:
         - name: GIT_TOKEN
           value: your_github_token_here
