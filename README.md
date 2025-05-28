@@ -24,10 +24,14 @@ This is to allow Kaniko to find the context where to build the image.
 
 For instance, if the Dockerfile is in the project root directory, you may just provide `Dockerfile` as the context. This value is to be provided against the key `--context=` in the builder container arguments.
 
-#### Modify the builder Kubernetes Job spec
+#### Modify the builder Kubernetes Job spec and create a build job
 A job spec is prefered since it will execute the task and be automatically purged once the image is pushed.
 
 Provide the correct image path to the key `--destination` for the builder to push the image.
+
+```
+kubectl apply -f job-spec.yaml
+```
 
 #### Acknowledgements
 For more details and up-to-date code visit the [Official Kaniko GitHub](https://github.com/GoogleContainerTools/kaniko?tab=readme-ov-file#running-kaniko-in-a-kubernetes-cluster) repository.
