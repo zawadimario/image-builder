@@ -7,6 +7,8 @@
 #### Generate dockerconfig.json
 Replace DOCKER_USERNAME and DOCKER_PASSWORD with your DockerHub username and personal access token (from Docker Hub > Account Settings > Security > New Access Token) and use that as the password. It’s more secure and easier to rotate.
 
+If using a different docker registry, consider changing 'https://index.docker.io/v1/' to match that of your repository.
+
 ```
 echo '{"auths":{"https://index.docker.io/v1/":{"auth":"'"$(echo -n '<DOCKER_USERNAME>:<DOCKER_PASSWORD>' | base64)"'"}}}' > dockerconfig.json
 ```
